@@ -23,7 +23,7 @@ metadata:
     tier: database
     component: rabbitmq
 spec:
-  replicas: 0
+  replicas: 1
   #THESE ARE THE LABELS REPLICASET USES TO CREATE POD REPLICAS, THIS SHOULD MATCH POD TEMPLATE LABELS
   selector:
    matchLabels:
