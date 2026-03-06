@@ -20,9 +20,9 @@ spec:
   template:
     metadata:
      labels:
-     project: roboshop
-     tier: database
-     component: mongodb
+      project: roboshop
+      tier: database
+      component: mongodb
     spec:
       containers:
         - name: nginx
