@@ -25,26 +25,26 @@ metadata:
     component: catalogue
 spec:
   replicas: 1
-  #THESE ARE THE LABELS REPLICASET USES TO CREATE POD REPLICAS, THIS SHOULD MATCH POD TEMPLATE LABELS
+  # These are the labels replica set use to create pod replicas, this should match pod labels
   selector:
-   matchLabels:
-    project: roboshop
-    tier: app
-    component: catalogue
-#THIS IS POD DEFINITION
-  template:
-    metadata:
-     labels:
+    matchLabels:
       project: roboshop
       tier: app
       component: catalogue
+  # This is pod definition
+  template:
+    metadata:
+      labels:
+        component: catalogue
+        project: roboshop
+        tier: app
     spec:
       containers:
-        - name: catalogue
-          image: venkattholeti/catalogue:v1
-          envfrom:
-          - configMapRef:
-               name: catalogue
+      - name: catalogue
+        image: venkattholeti/catalogue:v1
+        envFrom:
+        - configMapRef:
+            name: catalogue
 
     #kubectl get pods -n roboshop (to see pods created under roboshop namespace)
 
