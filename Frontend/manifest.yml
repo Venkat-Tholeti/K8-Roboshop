@@ -38,7 +38,7 @@ data:
         include /etc/nginx/conf.d/*.conf;
 
         server {
-            listen       8080;
+            listen       8080;  # WE ARE GIVING OUR OWN PORT
             listen       [::]:8080;
             server_name  _;
             root         /usr/share/nginx/html;

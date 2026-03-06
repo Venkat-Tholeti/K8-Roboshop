@@ -41,6 +41,9 @@ spec:
       containers:
         - name: rabbitmq
           image: rabbitmq:3
+          envFrom:
+          - configMapRef:
+             name: rabbitmq
 
     #kubectl get pods -n roboshop (to see pods created under roboshop namespace)
 
