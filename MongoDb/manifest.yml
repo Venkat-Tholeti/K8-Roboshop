@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  #DEPLOYMENT LABELS
+  labels:
+    project: roboshop
+    tier: database
+    component: mongodb
+spec:
+  replicas: 1
+  #THESE ARE THE LABELS REPLICASET USES TO CREATE POD REPLICAS, THIS SHOULD MATCH POD TEMPLATE LABELS
+  selector:
+   matchLabels:
+    project: roboshop
+    tier: database
+    component: mongodb
+#THIS IS POD DEFINITION
+  template:
+    metadata:
+     labels:
+     project: roboshop
+     tier: database
+     component: mongodb
+    spec:
+      containers:
+        - name: nginx
+          image: venkattholeti/mongodb:v1
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    purpose: service-demo
+spec:
+  selector: #HERE SELECTORS ARE LABELS (LABELS ARE SELECTORS,HERE THIS SERVICE WILL DEPEND ON LABLES TO SELECT AND WORK ON WHICH PODS)
+    purpose: service-demo
+    project: roboshop
+    environment: dev
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80 # container port
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels: #HERE WHICH POD LABELS ARE GIVEN WE NEED TO USE SAME LABELS AS SELECTORS IN ABOVE INSTRUCTIONS
+    purpose: service-demo
+    project: roboshop
+    environment: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx

@@ -6,4 +6,4 @@ metadata:
     project: Roboshop
     environment: Dev
 
-    #kubectl get ns or nameservices
+    #kubectl get ns or namespaces
