@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shipping
+  namespace: roboshop
+  labels:
+    project: roboshop
+    tier: app
+    component: shipping
+data:
+  CART_ENDPOINT: "cart:8080"
+  DB_HOST: "mysql"
+
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping
+  namespace: roboshop
+  #DEPLOYMENT LABELS
+  labels:
+    project: roboshop
+    tier: app
+    component: shipping
+spec:
+  replicas: 1
+  # These are the labels replica set use to create pod replicas, this should match pod labels
+  selector:
+    matchLabels:
+      project: roboshop
+      tier: app
+      component: shipping
+  # This is pod definition
+  template:
+    metadata:
+      labels:
+        component: shipping
+        project: roboshop
+        tier: app
+    spec:
+      containers:
+      - name: shipping
+        image: venkattholeti/shipping:v1
+        envFrom:
+        - configMapRef:
+            name: shipping
+
+    #kubectl get pods -n roboshop (to see pods created under roboshop namespace)
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping
+  namespace: roboshop
+  labels:
+     project: roboshop
+     tier: app
+     component: shipping
+spec:
+  selector: #HERE SELECTORS ARE LABELS (LABELS ARE SELECTORS,HERE THIS SERVICE WILL DEPEND ON LABLES TO SELECT AND WORK ON WHICH PODS)
+     project: roboshop
+     tier: app
+     component: shipping
+  ports:
+    - protocol: TCP
+      port: 8080 # service port
+      targetPort: 8080 # container port
