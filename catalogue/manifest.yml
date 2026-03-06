@@ -1,32 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    project: roboshop
+    tier: app
+    component: catalogue
+data:
+  MONGO: "true"
+  MONGO_URL: "mongodb://<MONGODB-SERVER-IPADDRESS>:27017/catalogue"
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb
+  name: catalogue
   namespace: roboshop
   #DEPLOYMENT LABELS
   labels:
     project: roboshop
-    tier: database
-    component: mongodb
+    tier: app
+    component: catalogue
 spec:
   replicas: 1
   #THESE ARE THE LABELS REPLICASET USES TO CREATE POD REPLICAS, THIS SHOULD MATCH POD TEMPLATE LABELS
   selector:
    matchLabels:
     project: roboshop
-    tier: database
-    component: mongodb
+    tier: app
+    component: catalogue
 #THIS IS POD DEFINITION
   template:
     metadata:
      labels:
       project: roboshop
-      tier: database
-      component: mongodb
+      tier: app
+      component: catalogue
     spec:
       containers:
-        - name: mongodb
-          image: venkattholeti/mongodb:v1
+        - name: catalogue
+          image: venkattholeti/catalogue:v1
+          envfrom:
+          - configMapRef:
+               name: catalogue
 
     #kubectl get pods -n roboshop (to see pods created under roboshop namespace)
 
@@ -35,18 +53,18 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: catalogue
   namespace: roboshop
   labels:
      project: roboshop
-     tier: database
-     component: mongodb
+     tier: app
+     component: catalogue
 spec:
   selector: #HERE SELECTORS ARE LABELS (LABELS ARE SELECTORS,HERE THIS SERVICE WILL DEPEND ON LABLES TO SELECT AND WORK ON WHICH PODS)
      project: roboshop
-     tier: database
-     component: mongodb
+     tier: app
+     component: catalogue
   ports:
     - protocol: TCP
-      port: 27017 # service port
-      targetPort: 27017 # container port
+      port: 8080 # service port
+      targetPort: 8080 # container port
