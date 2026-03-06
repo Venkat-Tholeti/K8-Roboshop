@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
+  namespace: roboshop
   #DEPLOYMENT LABELS
   labels:
     project: roboshop
@@ -27,33 +28,25 @@ spec:
         - name: nginx
           image: venkattholeti/mongodb:v1
 
+    #kubectl get pods -n roboshop (to see pods created under roboshop namespace)
+
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: mongodb
+  namespace: roboshop
   labels:
-    purpose: service-demo
+     project: roboshop
+     tier: database
+     component: mongodb
 spec:
   selector: #HERE SELECTORS ARE LABELS (LABELS ARE SELECTORS,HERE THIS SERVICE WILL DEPEND ON LABLES TO SELECT AND WORK ON WHICH PODS)
-    purpose: service-demo
-    project: roboshop
-    environment: dev
+     project: roboshop
+     tier: database
+     component: mongodb
   ports:
     - protocol: TCP
-      port: 80 # service port
-      targetPort: 80 # container port
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-  labels: #HERE WHICH POD LABELS ARE GIVEN WE NEED TO USE SAME LABELS AS SELECTORS IN ABOVE INSTRUCTIONS
-    purpose: service-demo
-    project: roboshop
-    environment: dev
-spec:
-  containers:
-  - name: nginx
-    image: nginx
+      port: 27017 # service port
+      targetPort: 27017 # container port
