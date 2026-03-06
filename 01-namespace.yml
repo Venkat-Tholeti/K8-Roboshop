@@ -5,3 +5,5 @@ metadata:
   labels:
     project: Roboshop
     environment: Dev
+
+    #kubectl get ns or nameservices
