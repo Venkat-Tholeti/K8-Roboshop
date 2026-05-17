@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Deployment
 metadata:
   name: mongodb
-  namespace: roboshop
+  namespace: roboshop #Namespace should be mentioned here so that it will create in that namespace
   #DEPLOYMENT LABELS
   labels:
     project: roboshop
