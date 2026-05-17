@@ -31,7 +31,6 @@ spec:
     #kubectl get pods -n roboshop (to see pods created under roboshop namespace)
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
